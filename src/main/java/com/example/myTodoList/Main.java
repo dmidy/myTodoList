@@ -1,34 +1,30 @@
 package com.example.myTodoList;
 
 import com.example.myTodoList.services.NoteService;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-public class Main {
+@SpringBootApplication
+public class Main  {
+    @Autowired
+    private NoteService noteService;
+
     public static void main(String[] args) {
-        NoteService noteService = new NoteService();
+        SpringApplication.run(Main.class, args);
+    }
 
+    @PostConstruct
+    public void init() {
         Note note1 = new Note();
-        note1.setTitle("First note");
-        note1.setContent("Just nothing interesting");
-        Note addedNote1 = noteService.add(note1);
+        note1.setTitle("Name1");
+        note1.setContent("СTest text just for note");
+        noteService.add(note1);
 
         Note note2 = new Note();
-        note2.setTitle("Second note");
-        note2.setContent("Need buy fish, milk, meet and loperamid");
-        Note addedNote2 = noteService.add(note2);
-
-        System.out.println("All notes:");
-        noteService.listAll().forEach(System.out::println);
-
-        long noteIdToDelete = addedNote1.getId();
-        noteService.deleteById(noteIdToDelete);
-        System.out.println("Note ID " + noteIdToDelete + " remove");
-
-        addedNote2.setContent("Don`t buy milk!");
-        noteService.update(addedNote2);
-        System.out.println("Note update: " + addedNote2);
-
-        long noteIdToFind = addedNote2.getId();
-        Note foundNote = noteService.getById(noteIdToFind);
-        System.out.println("Found note: " + foundNote);
+        note2.setTitle("Name2");
+        note2.setContent("Project test note");
+        noteService.add(note2);
     }
 }
