@@ -19,9 +19,12 @@ repositories {
 dependencies {
 //	compileOnly("org.projectlombok:lombok:1.18.30")
 	implementation("org.springframework:spring-webmvc:6.1.6")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.2.5")
 	implementation("org.springframework.boot:spring-boot-starter-thymeleaf:3.2.5")
+	implementation("org.flywaydb:flyway-core:10.11.1")
 	implementation("org.webjars:bootstrap:5.3.3")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("com.h2database:h2:2.2.224")
 }
 
 

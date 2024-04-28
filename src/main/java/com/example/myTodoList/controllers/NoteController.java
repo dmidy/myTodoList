@@ -1,6 +1,6 @@
 package com.example.myTodoList.controllers;
 
-import com.example.myTodoList.Note;
+import com.example.myTodoList.model.Note;
 import com.example.myTodoList.services.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,27 +21,30 @@ public class NoteController {
     public String startNote(){
         return "redirect:/note/list";
     }
-    @GetMapping ("/list")       //отримати список нотаток. Виводиться список нотаток (title та content), кожну нотатку можна видалити або редагувати
+    @GetMapping ("/list")
     public ModelAndView getNote(){
         ModelAndView modelAndView = new ModelAndView("list");
         List <Note> notes = this.noteService.listAll();
         modelAndView.addObject("notes", notes);
         return modelAndView;
     }
-    @PostMapping ("/delete/{id}")       //видалити нотатку по ID. Після видалення нотатки відбувається редирект на /note/list
+    @PostMapping ("/delete/{id}")
     public String removeNote(@PathVariable("id") long id){
         noteService.deleteById(id);
         return "redirect:/note/list";
     }
-    @GetMapping ("/edit/{id}")  //сторінка редагування нотатку (відкривається по натисненню на кнопку Редагувати на списку нотаток).
+    @GetMapping ("/edit/{id}")
     public String editNote(@PathVariable("id") long id, RedirectAttributes redirectAttributes){
-        Note note = noteService.getById(id);
+        Note note = noteService.findById(id);
         redirectAttributes.addFlashAttribute("note", note);
         return "redirect:/note/edit";
     }
-    @PostMapping ("/edit")        //сюди відправляється запит на редагування нотатки. Після збереження оновленого контенту нотатки відбувається редирект на /list
+    @PostMapping ("/edit")
     public String saveNote(@ModelAttribute("note") Note note){
-        noteService.update(note);
+        Long id = note.getId();
+        String title = note.getTitle();
+        String content = note.getContent();
+        noteService.update(id, title, content);
         return "redirect:/note/list";
     }
 }

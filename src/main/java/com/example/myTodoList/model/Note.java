@@ -1,15 +1,19 @@
-package com.example.myTodoList;
+package com.example.myTodoList.model;
 
+import jakarta.persistence.*;
+
+
+@Entity
+@Table(name = "note")
 public class Note {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String title;
 	private String content;
 
 	public long getId() {
 		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
 	}
 	public String getTitle() {
 		return title;
@@ -22,6 +26,9 @@ public class Note {
 	}
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public Note() {
 	}
 
 	@Override
