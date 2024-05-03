@@ -8,9 +8,11 @@
 <body>
 <div class="container mt-4">
     <h1>List of Notes</h1>
+    <a th:href="@{/note/add}" class="btn btn-primary mb-3">Add new</a>
     <table class="table">
         <thead>
         <tr>
+            <th>ID</th>
             <th>Title</th>
             <th>Content</th>
             <th></th>
@@ -19,6 +21,7 @@
         </thead>
         <tbody>
         <tr th:each="note : ${notes}">
+            <td th:text="${note.id}"></td>
             <td th:text="${note.title}"></td>
             <td th:text="${note.content}"></td>
             <td><a th:href="@{'/note/edit/' + ${note.id}}">Edit</a></td>

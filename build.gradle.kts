@@ -2,7 +2,6 @@ plugins {
 	java
 	id("org.springframework.boot") version "3.2.3"
 	id("io.spring.dependency-management") version "1.1.4"
-	id ("war")
 }
 
 group = "com.example"
@@ -18,22 +17,19 @@ repositories {
 
 dependencies {
 //	compileOnly("org.projectlombok:lombok:1.18.30")
-	implementation("org.springframework:spring-webmvc:6.1.6")
+	implementation("org.springframework.boot:spring-boot-starter-web:3.2.5")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.2.5")
 	implementation("org.springframework.boot:spring-boot-starter-thymeleaf:3.2.5")
-	implementation("org.flywaydb:flyway-core:10.11.1")
+	implementation("com.h2database:h2:2.2.224")
+	implementation("org.flywaydb:flyway-core:10.9.1")
 	implementation("org.webjars:bootstrap:5.3.3")
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("com.h2database:h2:2.2.224")
+
 }
 
 
 
 tasks.withType<Test> {
 	useJUnitPlatform()
-}
-
-tasks.named<War>("bootWar") {
-	archiveFileName.set("myTodoList.war")
-	destinationDirectory.set(file("$buildDir/libs"))
 }
