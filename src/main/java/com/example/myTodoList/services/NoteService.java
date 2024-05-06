@@ -22,10 +22,8 @@ public class NoteService {
     }
 
     public long add(String title, String content) {
-        Note newNote = new Note();
-        newNote.setTitle(title);
-        newNote.setContent(content);
-        Note savedNote =noteRepository.save(newNote);
+        Note newNote = new Note(title, content);
+        Note savedNote = noteRepository.save(newNote);
         return savedNote.getId();
     }
     public Optional<Note> findById(long id) {

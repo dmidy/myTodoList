@@ -31,32 +31,29 @@ public class Note {
 	public Note() {
 	}
 
-	@Override
-	public String toString() {
-		return "Note{" +
-				"id=" + id +
-				", title='" + title + '\'' +
-				", content='" + content + '\'' +
-				'}';
+	public Note(String title, String content) {
+		this.title = title;
+		this.content = content;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+//	@Override
+//	public String toString() {
+//		return "Note{" +
+//				"id=" + id +
+//				", title='" + title + '\'' +
+//				", content='" + content + '\'' +
+//				'}';
+//	}
 
-		Note note = (Note) o;
-
-		if (id != note.id) return false;
-		if (title != null ? !title.equals(note.title) : note.title != null) return false;
-		return content != null ? content.equals(note.content) : note.content == null;
-	}
-
-	@Override
-	public int hashCode() {
-		int result = (int) (id ^ (id >>> 32));
-		result = 31 * result + (title != null ? title.hashCode() : 0);
-		result = 31 * result + (content != null ? content.hashCode() : 0);
-		return result;
-	}
+//	@Override
+//	public boolean equals(Object o) {
+//		if (this == o) return true;
+//		if (o == null || getClass() != o.getClass()) return false;
+//
+//		Note note = (Note) o;
+//
+//		if (id != note.id) return false;
+//		if (title != null ? !title.equals(note.title) : note.title != null) return false;
+//		return content != null ? content.equals(note.content) : note.content == null;
+//	}
 }

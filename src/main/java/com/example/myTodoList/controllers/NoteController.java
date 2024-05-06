@@ -11,7 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/note")
@@ -31,44 +30,26 @@ public class NoteController {
         return modelAndView;
     }
 
-    @GetMapping("/add")
-    public String addNotePage(Model model) {
-        long newNoteId = noteService.add("","");
-        return String.format("redirect:/note/edit/%d", newNoteId);
-    }
-
-    @PostMapping ("/delete/{id}")
+    @GetMapping ("/delete/{id}")
     public String removeNote(@PathVariable("id") long id){
         noteService.deleteById(id);
         return "redirect:/note/list";
     }
+
     @GetMapping("/edit/{id}")
-    public String editNote(@PathVariable("id") long id, Model model) {
-        Optional<Note> noteOptional = noteService.findById(id);
-        if (noteOptional.isPresent()) {
-            Note note = noteOptional.get();
+    public String searchNote(@PathVariable("id") long id, Model model) {
+        Note note = noteService.findById(id).orElse(null);
+        if (note != null) {
             model.addAttribute("note", note);
             return "edit";
         } else {
-            model.addAttribute("errorMessage", "Note with id " + id + " not found");
-            return "errorList";
+            return "redirect:/note/list";
         }
     }
 
-    @GetMapping("/edit")
-    public ModelAndView editNotePage(@ModelAttribute("note") Note note) {
-        ModelAndView modelAndView = new ModelAndView("edit");
-        modelAndView.addObject("note", note);
-        return modelAndView;
-    }
-
-    @PostMapping ("/edit")
-    public String saveNote(@ModelAttribute("note") Note note){
-        Long id = note.getId();
-        System.out.println("Received id: " + id);
-        String title = note.getTitle();
-        String content = note.getContent();
-        noteService.update(id, title, content);
+    @PostMapping("/edit")
+    public String editNote(@RequestParam("id") long id, @ModelAttribute Note note) {
+        noteService.update(id, note.getTitle(), note.getContent());
         return "redirect:/note/list";
     }
 }
