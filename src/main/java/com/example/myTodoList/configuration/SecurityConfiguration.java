@@ -1,43 +1,40 @@
 package com.example.myTodoList.configuration;
 
-import org.flywaydb.core.internal.jdbc.JdbcTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
-import org.springframework.security.provisioning.UserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
+
 
 @Configuration
 public class SecurityConfiguration {
 
-    private final DataSource dataSource;
+@Autowired
+private DataSource dataSource;
 
-    public SecurityConfiguration(DataSource dataSource) {
-        this.dataSource = dataSource;
+    @Autowired
+    public void configAuthentication(AuthenticationManagerBuilder authBuilder) throws Exception {
+        authBuilder.jdbcAuthentication()
+                .dataSource(dataSource)
+                .passwordEncoder(new BCryptPasswordEncoder(12))
+                .usersByUsernameQuery("select username, password, enabled from users where username='user'")
+                .authoritiesByUsernameQuery("select username, 'user' as role from users where username='user'")
+        ;
     }
 
     @Bean
-    public JdbcTemplate jdbcTemplate() throws SQLException {
-        Connection connection = dataSource.getConnection();
-        return new JdbcTemplate(connection);
-    }
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(auth -> auth
+                        .anyRequest().authenticated())
+                .formLogin(login -> login.permitAll())
+                .logout(logout -> logout.permitAll())
+        ;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public UserDetailsManager userDetailsManager() {
-        JdbcUserDetailsManager userDetailsManager = new JdbcUserDetailsManager(dataSource);
-        userDetailsManager.createUser(User.withUsername("user").password("jdbcDefault").roles("user").build());
-        return userDetailsManager;
+        return http.build();
     }
 }

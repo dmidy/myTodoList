@@ -7,6 +7,11 @@
 </head>
 <body>
 <div class="container mt-4">
+    <h3 th:inline="text">Welcome [[${#httpServletRequest.remoteUser}]]</h3>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Logout" />
+    </form>
+
     <h1>List of Notes</h1>
     <a th:href="@{/note/add}" class="btn btn-primary mb-3">Add new</a>
     <table class="table">
