@@ -7,7 +7,7 @@
 </head>
 <body>
 <div class="container mt-4">
-    <h3 th:inline="text">Welcome [[${#httpServletRequest.remoteUser}]]</h3>
+    <h3 th:inline="text">Welcome [[${remoteUser}]]</h3> <h3>${username}</h3>
     <form th:action="@{/logout}" method="post">
         <input type="submit" value="Logout" />
     </form>
@@ -26,11 +26,11 @@
         </thead>
         <tbody>
         <tr th:each="note : ${notes}">
-            <td th:text="${note.id}"></td>
+            <td th:text="${note.noteId}"></td>
             <td th:text="${note.title}"></td>
             <td th:text="${note.content}"></td>
-            <td><a th:href="@{'/note/edit/' + ${note.id}}">Edit</a></td>
-            <td><a th:href="@{'/note/delete/' + ${note.id}}" onclick="return confirm('Are you sure you want to delete this note?')">Delete</a></td>
+            <td><a th:href="@{'/note/edit/' + ${note.user.userId} + '/' + ${note.noteId}}">Edit</a></td>
+            <td><a th:href="@{'/note/delete/' + ${note.user.userId} + '/' + ${note.noteId}}" onclick="return confirm('Are you sure you want to delete this note?')">Delete</a></td>
         </tr>
         </tbody>
     </table>
