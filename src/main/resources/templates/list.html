@@ -7,13 +7,13 @@
 </head>
 <body>
 <div class="container mt-4">
-    <h3 th:inline="text">Welcome [[${remoteUser}]]</h3> <h3>${username}</h3>
+    <h3>Welcome <span th:text="${remoteUser}"></span></h3>
     <form th:action="@{/logout}" method="post">
-        <input type="submit" value="Logout" />
+        <input type="submit" value="Logout" class="btn btn-secondary"/>
     </form>
 
     <h1>List of Notes</h1>
-    <a th:href="@{/note/add}" class="btn btn-primary mb-3">Add new</a>
+    <a th:href="@{/note/user/{username}/add(username=${username})}" class="btn btn-primary mb-3">Add new</a>
     <table class="table">
         <thead>
         <tr>
@@ -29,8 +29,8 @@
             <td th:text="${note.noteId}"></td>
             <td th:text="${note.title}"></td>
             <td th:text="${note.content}"></td>
-            <td><a th:href="@{'/note/edit/' + ${note.user.userId} + '/' + ${note.noteId}}">Edit</a></td>
-            <td><a th:href="@{'/note/delete/' + ${note.user.userId} + '/' + ${note.noteId}}" onclick="return confirm('Are you sure you want to delete this note?')">Delete</a></td>
+            <td><a th:href="@{'/note/user/' + ${username} + '/edit/' + ${note.noteId}}" class="btn btn-warning">Edit</a></td>
+            <td><a th:href="@{'/note/user/' + ${username} + '/delete/' + ${note.noteId}}" onclick="return confirm('Are you sure you want to delete this note?')" class="btn btn-danger">Delete</a></td>
         </tr>
         </tbody>
     </table>
