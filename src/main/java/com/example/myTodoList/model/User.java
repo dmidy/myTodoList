@@ -37,5 +37,5 @@ public class User {
     @Column(name = "enabled")
     private Boolean enabled;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Note> notes = new ArrayList<>();
+    private List<Note> notes;
 }
